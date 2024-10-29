@@ -1,0 +1,22 @@
+.sub-home-container { 
+    position: relative;
+    background-size: cover;
+    overflow: hidden;
+}
+  
+.sub-home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHRzcTJleXpxZTl3ZHhlNGkyaWdtaWR0Y3Nta2sxMXF4NzVncHUxZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26tOZ42Mg6pbTUPHW/giphy.gif');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5; /* Adjust opacity for the background */
+    z-index: 0; /* Ensure this stays below the content */
+}
+
+
+  
