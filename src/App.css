@@ -1,0 +1,11 @@
+.link-item{
+    text-decoration: none;
+    color: white;
+    font-weight: 800;
+}
+
+.link-item-dark{
+    text-decoration: none;
+    color: black;
+    display: flex;
+}

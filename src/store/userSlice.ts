@@ -11,7 +11,16 @@ export const addCartItem:any=createAsyncThunk('cart/addItem',async (item,{reject
     }
 })
 
-export const removeCartItem=createAsyncThunk('cart/removeItem',async (item,{rejectWithValue})=>{
+export const updateQuantity:any=createAsyncThunk('cart/updateQuantity',async (item,{rejectWithValue})=>{
+    try{
+        const response=await userService.updateQuantity(item)
+        return response
+    }catch(err:any){
+        return rejectWithValue(err.message)
+    }
+})
+
+export const removeCartItem:any=createAsyncThunk('cart/removeItem',async (item,{rejectWithValue})=>{
     try{
         const response=await userService.removeCartItem(item)
         return response
@@ -36,7 +45,9 @@ const userSlice=createSlice({
         addCartStatus:'idle',
         cartItems:[],
         status:'idle',
-        error:""
+        error:"",
+        updateCartStatus:'idle',
+        removeCartStatus:'idle'
     },
     reducers:{},
     extraReducers:(builder)=>{
@@ -60,6 +71,24 @@ const userSlice=createSlice({
             .addCase(getCartItems.rejected,(state:any,action)=>{
                 state.status='failed'
                 state.error=action.payload
+            })
+            .addCase(updateQuantity.pending,(state:any)=>{
+                state.updateCartStatus='loading'
+            })
+            .addCase(updateQuantity.fulfilled,(state:any)=>{
+                state.updateCartStatus='succeeded'
+            })
+            .addCase(updateQuantity.rejected,(state:any)=>{
+                state.updateCartStatus='failed'
+            })
+            .addCase(removeCartItem.pending,(state:any)=>{
+                state.removeCartItem='loading'
+            })
+            .addCase(removeCartItem.fulfilled,(state:any)=>{
+                state.removeCartStatus='succeeded'
+            })
+            .addCase(removeCartItem.rejected,(state:any)=>{
+                state.removeCartStatus='failed'
             })
     }
 })

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,7 +7,7 @@ import { changeMode, logInUser, registerUser } from '../../store/authSlice'; // 
 
 import './loginOrRegister.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 const LoginOrRegister: React.FC = () => {
   const [formValues, setFormValues] = useState({ email: '', password: '', name: '' });
@@ -17,6 +17,17 @@ const LoginOrRegister: React.FC = () => {
   const dispatch = useDispatch();
   const navigate=useNavigate()
 
+  useEffect(()=>{
+    const path=window.location.pathname
+    dispatch(changeMode(path.substring(1)))
+  },[])
+
+  const token = sessionStorage.getItem('token');
+ 
+  if (token) {
+      return <Navigate to="/" />
+  }
+
   const saveLoggedInUserDetails=(userDetails:any)=>{
     const {token,role,username,userId}=userDetails
     sessionStorage.setItem('token',token);
@@ -25,10 +36,10 @@ const LoginOrRegister: React.FC = () => {
     sessionStorage.setItem('userId',userId)
   }
 
-  const openNewMode=()=>{
+  const openNewMode=(value:String)=>{
     setFormValues({ email: '', password: '', name: '' })
     setErrors({});
-    dispatch(changeMode())
+    dispatch(changeMode(value))
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -56,7 +67,7 @@ const LoginOrRegister: React.FC = () => {
       if (logInUser.fulfilled.match(resultAction) || registerUser.fulfilled.match(resultAction)) {
         toast.success(`${mode === 'login' ? 'Logged in' : 'Registered'} successfully!`);
         if(mode==='register'){
-          openNewMode()
+          openNewMode('login')
           navigate('/login')
         }else{
           const {token,data}=resultAction.payload
@@ -121,10 +132,10 @@ const LoginOrRegister: React.FC = () => {
             {mode === 'login' ? (
               <>
                 <a href="#/">Forgot Password</a>
-                <Link to="/register" onClick={openNewMode}>Signup</Link>
+                <Link to="/register" onClick={()=>openNewMode('register')}>Signup</Link>
               </>
             ) : (
-              <Link to="/login" onClick={openNewMode}>Login</Link>
+              <Link to="/login" onClick={()=>openNewMode('login')}>Login</Link>
             )}
           </div>
         </form>

@@ -3,16 +3,21 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginOrRegister from './components/LoginOrRegister/loginOrRegister';
 import  Home from './pages/Home/home';
-import { MenuList } from './components/MenuList/menuList';
+import Menu from './pages/Menu/menu'
+import { ProtectedRoute } from './components/ProtectedRoute/protectedRoute';
+import Cart from './pages/Cart/cart';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter>  
       <Routes>
         <Route path="/login" element={<LoginOrRegister/>}/>
         <Route path="/register" element={<LoginOrRegister/>}/>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/menu" element={<MenuList/>}/>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/cart" element={<Cart/>}/>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

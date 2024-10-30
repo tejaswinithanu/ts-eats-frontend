@@ -3,8 +3,9 @@ import { Box, Button, Card, CardContent, CardMedia, Grid, TextField, Typography 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import StarRatings from 'react-star-ratings';
-import { addCartItem} from "../../store/userSlice";
+import { addCartItem, updateQuantity} from "../../store/userSlice";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { getMenuItems } from "../../store/menuSlice";
 
 
 
@@ -14,6 +15,7 @@ export const MenuItemCard=({item,cartItems}:any)=>{
     const {addCartStatus}=useSelector((state:any)=>state.userSlice)
     
     const dispatch=useDispatch()
+    const userId=sessionStorage.getItem('userId')
 
     useEffect(() => {
       const cartItem = cartItems.find((cartItem: any) => cartItem.itemId === item.itemId);
@@ -24,7 +26,7 @@ export const MenuItemCard=({item,cartItems}:any)=>{
   }, [cartItems, item.itemId]);
 
     const handleAdd=async ()=>{
-      const userId=sessionStorage.getItem('userId')
+      
       const details={
         userId,itemId:item.itemId,quantity
       }
@@ -52,6 +54,14 @@ export const MenuItemCard=({item,cartItems}:any)=>{
   //     }
   //     return stars;
   // };
+
+    const handleQuantity=async (e:any)=>{
+      setQuantity(Number(e.target.value))
+      const details={
+        userId,itemId:item.itemId,quantity:e.target.value
+      }
+      await dispatch(updateQuantity(details))  
+    }
 
     return(
         <Grid item xs={12} sm={6} md={4}>
@@ -104,7 +114,7 @@ export const MenuItemCard=({item,cartItems}:any)=>{
                       <TextField
                       type="number"
                       value={quantity}
-                      onChange={(e:any) => setQuantity(Number(e.target.value))}
+                      onChange={handleQuantity}
                       inputProps={{ min: 1 }}
                       size="small"
                       sx={{ width: '60px', marginRight: 1 }} // Adjust width and margin as needed

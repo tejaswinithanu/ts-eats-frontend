@@ -18,9 +18,9 @@ class UserService{
         }
     }
 
-    removeCartItem=async (item:any)=>{
+    removeCartItem=async (cartId:any)=>{
         try{
-            const response=await axios.delete('_',{...item})
+            const response=await axios.delete(`/cart/${cartId}`)
             if(response.data.status===200){
                 
                 return response.data.data
@@ -35,6 +35,20 @@ class UserService{
     getCartItems=async(userId:any)=>{
         try{
             const response=await axios.get(`/cart/${userId}`)
+            if(response.data.status===200){
+                console.log(response.data.data)
+                return response.data.data
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            throw new Error(err.message)
+        }
+    }
+
+    updateQuantity=async (item:any)=>{
+        try{
+            const response=await axios.put("/cart/update",{...item})
             if(response.data.status===200){
                 return response.data.data
             }else{

@@ -9,12 +9,20 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemIcon,
 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
+import HomeIcon from '@mui/icons-material/Home';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import InfoIcon from '@mui/icons-material/Info';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { keyframes } from "@mui/system";
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { changeMode } from '../../store/authSlice';
 
 const colorChangeAnimation = keyframes`
   0% { color: #ff357a; }
@@ -24,15 +32,46 @@ const colorChangeAnimation = keyframes`
   100% { color: #ff357a; }
 `;
 
+const tabs=[
+  {
+    tabName:'Home',
+    redirectUrl:'/',
+    icon:<HomeIcon/>
+  },
+  {
+    tabName:'Menu',
+    redirectUrl:'/menu',
+    icon:<RestaurantMenuIcon/>
+  },
+  {
+    tabName:'About us',
+    redirectUrl:'/about',
+    icon:<InfoIcon/>
+  },
+  {
+    tabName:'Home',
+    redirectUrl:'/contact',
+    icon:<ContactMailIcon/>
+  }
+]
+
 
 const Navbar: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
+
+  const handleLogout=()=>{
+    sessionStorage.clear()
+    dispatch(changeMode('login'))
+    navigate('/login')
+  }
 
   return (
     <AppBar position="sticky" color="transparent" elevation={0}>
@@ -57,21 +96,28 @@ const Navbar: React.FC = () => {
             </IconButton>
             <Drawer sx={{ '& .MuiDrawer-paper': { width: 200 } }} anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
               <List>
-                {['Home', 'Menu', 'About Us', 'Contact'].map((text) => (
-                  <ListItem component="div" key={text} onClick={toggleDrawer(false)}>
-                  <ListItemText primary={text} />
+                {tabs.map((tab) => (
+                  <ListItem component="div" key={tab.tabName} onClick={toggleDrawer(false)}>
+                    <Link className="link-item-dark" to={tab.redirectUrl}>
+                    <ListItemIcon>
+                      {tab.icon}
+                    </ListItemIcon>
+                  <ListItemText primary={tab.tabName} />
+                  </Link>
                 </ListItem>
                 
                 ))}
               </List>
+              <Button onClick={handleLogout} color='inherit' sx={{bgcolor:'#ebba34'}}>Logout</Button>
             </Drawer>
           </>
         ) : (
           <>
-            <Button color="inherit">Home</Button>
-            <Button color="inherit">Menu</Button>
+            <Button color="inherit"><Link className='link-item' to="/">Home</Link></Button>
+            <Button color="inherit"><Link className='link-item' to="/menu">Menu</Link></Button>
             <Button color="inherit">About Us</Button>
             <Button color="inherit">Contact</Button>
+            <Button onClick={handleLogout} color='inherit' sx={{bgcolor:'#ebba34'}}>Logout</Button>
           </>
         )}
       </Toolbar>

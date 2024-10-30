@@ -30,8 +30,8 @@ const authSlice=createSlice({
         mode:'login'
     },
     reducers:{
-        changeMode:(state:any)=>{
-            state.mode=state.mode==='login'?'register':'login';
+        changeMode:(state:any,action)=>{
+            state.mode=action.payload
             console.log(state.mode)
         }
     },
