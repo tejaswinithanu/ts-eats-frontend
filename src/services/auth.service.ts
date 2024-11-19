@@ -10,17 +10,33 @@
  }
 
 class AuthService{
-    
-    login=async (userDetails:UserDetails)=>{
+
+    existUser=async (email:any)=>{
         try{
-            const response=await axios.post('/users/login',{...userDetails})        
+            const response=await axios.post('/users/exist',{email})    
+            console.log(response)    
             if(response.data.status===200){
-                return response.data
+                return response.data.data
             }else{
                 throw new Error(response.data.message)
             }
         }catch(err:any){
-            console.log('err',err)
+            throw new Error(err.message || 'Login failed');
+        }
+    }
+    
+    login=async (userDetails:UserDetails)=>{
+        try{
+            const response=await axios.post('/users/login',{...userDetails}) 
+            console.log(response)
+            if(response.data.status===200){
+                
+                return {token:response.data.token,...response.data.data}
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            
             throw new Error(err.message || 'Login failed');
         }
     }
@@ -28,14 +44,14 @@ class AuthService{
     register=async (newUserDetails:NewUserDetails)=>{
         try{
             const response=await axios.post('/users/register',{username:newUserDetails.name,email:newUserDetails.email,password:newUserDetails.password})
-            console.log('response',response.data)
+            
             if(response.data.status===201){
                 return response.data
             }else{
                 throw new Error(response.data.message)
             }
         }catch(err:any){
-            console.log(err)
+            
             throw new Error(err.message || 'Registration failed');
         }
     }

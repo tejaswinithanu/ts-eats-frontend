@@ -4,13 +4,22 @@ import authentication from '../services/auth.service'
 export const logInUser=createAsyncThunk('user/login',async (userDetails:any,{rejectWithValue})=>{
     try{
         const response=await authentication.login(userDetails)
-        console.log(response)
         return response
     }catch(err:any){
-        console.log(err.message)
         return rejectWithValue(err.message)
     }
 })
+
+export const existUser=createAsyncThunk('user/exist',async (email:any,{rejectWithValue})=>{
+    try{
+        const response=await authentication.existUser(email)
+        return response
+    }catch(err:any){
+        return rejectWithValue(err.message)
+    }
+})
+
+
 
 export const registerUser=createAsyncThunk('user/register',async (userDetails:any,{rejectWithValue})=>{
     try{
@@ -27,29 +36,39 @@ const authSlice=createSlice({
         loginStatus:"idle",
         loggedInUser:{},
         loginError:"",
-        mode:'login'
+        mode:'login',
+        existUserStatus:'idle',
+        existedUser:{},
+        existUserError:''
     },
     reducers:{
         changeMode:(state:any,action)=>{
             state.mode=action.payload
-            console.log(state.mode)
         }
     },
     extraReducers:(builder)=>{
         builder
             .addCase(logInUser.pending,(state:any)=>{
                 state.loginStatus='loading'
-                console.log('status inside pending',state.loginStatus)
             })
             .addCase(logInUser.fulfilled,(state:any,action:any)=>{
                 state.loginStatus="succeeded"
                 state.loggedInUser=action.payload
-                console.log('status inside fulfilled',state.loginStatus)
             })
             .addCase(logInUser.rejected,(state:any,action:any)=>{
                 state.loginStatus='failed'
                 state.loginError=action.payload
-                console.log('status inside rejected',state.loginStatus)
+            })
+            .addCase(existUser.pending,(state:any)=>{
+                state.existUserStatus='loading'
+            })
+            .addCase(existUser.fulfilled,(state:any,action:any)=>{
+                state.existUserStatus="succeeded"
+                state.existedUser=action.payload
+            })
+            .addCase(existUser.rejected,(state:any,action:any)=>{
+                state.existUserStatus='failed'
+                state.existUserError=action.payload
             })
     }
 })

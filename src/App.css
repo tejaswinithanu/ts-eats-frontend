@@ -1,7 +1,21 @@
+:root {
+    --primary-color: #f2ad46;
+    --secondary-color: #f7bc63;
+    --black: #000000;
+    --white: #ffffff;
+    --gray: #efefef;
+    --gray-2: #757575;
+
+    --facebook-color: #4267B2;
+    --google-color: #DB4437;
+    --twitter-color: #1DA1F2;
+    --insta-color: #E1306C;
+}
+
 .link-item{
     text-decoration: none;
     color: white;
-    font-weight: 800;
+    font-weight: 300;
 }
 
 .link-item-dark{

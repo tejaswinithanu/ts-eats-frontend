@@ -1,28 +1,53 @@
 import axios from './axios.service'
 
-const categories=[
-    {
-        id:1,
-        categoryName:'Starters'
-    },
-    {
-        id:2,
-        categoryName:'Main Course'
-    },
-    {
-        id:3,
-        categoryName:'Munchies'
-    },
-    {
-        id:4,
-        categoryName:'Tiffens'
-    }
-]
 class MenuService{
     getMenuItems=async ()=>{
         try{
             const response=await axios.get('/items')
-            //console.log('response',response.data)
+            if(response.data.status===200){        
+                return response.data.data
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            throw new Error(err.message);
+        }
+    }
+
+    deleteMenuItem=async (itemId:any)=>{
+        console.log(itemId)
+        try{
+            const response=await axios.delete(`/items/${itemId}`)
+            console.log(response)
+            if(response.data.status===200){        
+                return response.data.data
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            throw new Error(err.message);
+        }
+    }
+
+    addMenuItem=async (item:any)=>{
+        try{
+            const response=await axios.post('/items', item)
+            
+            if(response.data.status===201){        
+                return response.data.data
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            throw new Error(err.message);
+        }
+    }
+
+    updateMenuItem=async(itemDetails:any, itemId:any)=>{
+
+        try{
+            const response=await axios.put(`/items/${itemId}`, itemDetails)
+            
             if(response.data.status===200){        
                 return response.data.data
             }else{
@@ -34,11 +59,42 @@ class MenuService{
     }
 
     getAllCategories=async ()=>{
-        return categories
+        try{
+            const response=await axios.get('/categories')
+            if(response.data.status===200){        
+                return response.data.data
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            throw new Error(err.message);
+        }
     }
 
-    getMenuByCategory=async (categoryId:any)=>{
+    addCategory=async(category:any)=>{
+        try{
+            const response=await axios.post('/categories', {category})
+            if(response.data.status===201){        
+                return response.data.data
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            throw new Error(err.message);
+        }
+    }
 
+    getMenuByCategory=async (categoryName:any)=>{
+        try{
+            const response=await axios.get(`/items/${categoryName}`)
+            if(response.data.status===200){        
+                return response.data.data
+            }else{
+                throw new Error(response.data.message)
+            }
+        }catch(err:any){
+            throw new Error(err.message);
+        }
     }
 }
 

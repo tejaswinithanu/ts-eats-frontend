@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import userService from "../services/user.store";
+import userService from "../services/user.service";
 
 export const addCartItem:any=createAsyncThunk('cart/addItem',async (item,{rejectWithValue})=>{
     try{
@@ -11,7 +11,55 @@ export const addCartItem:any=createAsyncThunk('cart/addItem',async (item,{reject
     }
 })
 
+export const updateOrder:any=createAsyncThunk('user/updateOrder',async (params:any,{rejectWithValue})=>{
+    const {orderId,status}=params
+    try{
+        const response=await userService.updateOrder(orderId, status)
+        return response
+    }catch(err:any){
+        return rejectWithValue(err.message)
+    }
+})
+
+export const placeOrder:any=createAsyncThunk('user/placeOrder',async (userId,{rejectWithValue})=>{
+    try{
+        const response=await userService.placeOrder(userId)
+        return response
+    }catch(err:any){
+        return rejectWithValue(err.message)
+    }
+})
+
+export const getOrderHistory:any=createAsyncThunk('user/getOrders',async (userId,{rejectWithValue})=>{
+    try{
+        const response=await userService.getOrderHistory(userId)
+        return response
+    }catch(err:any){
+        return rejectWithValue(err.message)
+    }
+})
+
+
+export const addAddress:any=createAsyncThunk('user/addAddress',async (userAddress,{rejectWithValue})=>{
+    try{
+        const response=await userService.addAddress(userAddress)
+        return response
+    }catch(err:any){
+        return rejectWithValue(err.message)
+    }
+})
+
+export const getUserAddress:any=createAsyncThunk('user/getAddresses',async (userId,{rejectWithValue})=>{
+    try{
+        const response=await userService.getAddresses(userId)
+        return response
+    }catch(err:any){
+        return rejectWithValue(err.message)
+    }
+})
+
 export const updateQuantity:any=createAsyncThunk('cart/updateQuantity',async (item,{rejectWithValue})=>{
+
     try{
         const response=await userService.updateQuantity(item)
         return response
@@ -43,11 +91,20 @@ const userSlice=createSlice({
     name:'userSlice',
     initialState:{
         addCartStatus:'idle',
-        cartItems:[],
+        cartData:{cartItems:[],totalCartAmount:0},
         status:'idle',
         error:"",
         updateCartStatus:'idle',
-        removeCartStatus:'idle'
+        removeCartStatus:'idle',
+        userAddresses:[],
+        getAddressStatus:'idle',
+        addAddressStatus:'idle',
+        placeOrderStatus:'idle',
+        orderHistory:[],
+        orderHistoryStatus:'idle',
+        orderUpdateStatus:'idle',
+        getCartStatus:'idle',
+        getCartError:'idle'
     },
     reducers:{},
     extraReducers:(builder)=>{
@@ -62,15 +119,16 @@ const userSlice=createSlice({
                 state.addCartStatus='failed'
             })
             .addCase(getCartItems.pending,(state:any)=>{
-                state.status='loading'
+                state.getCartStatus='loading'
+                state.getCartError=''
             })
             .addCase(getCartItems.fulfilled,(state:any,action)=>{
-                state.status='succeeded'
-                state.cartItems=action.payload
+                state.getCartStatus='succeeded'
+                state.cartData=action.payload
             })
             .addCase(getCartItems.rejected,(state:any,action)=>{
-                state.status='failed'
-                state.error=action.payload
+                state.getCartStatus='failed'
+                state.getCartError=action.payload
             })
             .addCase(updateQuantity.pending,(state:any)=>{
                 state.updateCartStatus='loading'
@@ -89,6 +147,53 @@ const userSlice=createSlice({
             })
             .addCase(removeCartItem.rejected,(state:any)=>{
                 state.removeCartStatus='failed'
+            })
+            .addCase(getUserAddress.pending,(state:any)=>{
+                state.getAddressStatus='loading'
+            })
+            .addCase(getUserAddress.fulfilled,(state:any, action)=>{
+                state.getAddressStatus='succeeded'
+                state.userAddresses=action.payload
+            })
+            .addCase(getUserAddress.rejected,(state:any)=>{
+                state.getAddressStatus='failed'
+            })
+            .addCase(addAddress.pending,(state:any)=>{
+                state.addAddressStatus='loading'
+            })
+            .addCase(addAddress.fulfilled,(state:any)=>{
+                state.addAddressStatus='succeeded'
+            })
+            .addCase(addAddress.rejected,(state:any)=>{
+                state.addAddressStatus='failed'
+            })
+            .addCase(placeOrder.pending,(state:any)=>{
+                state.placeOrderStatus='loading'
+            })
+            .addCase(placeOrder.fulfilled,(state:any)=>{
+                state.placeOrderStatus='succeeded'
+            })
+            .addCase(placeOrder.rejected,(state:any)=>{
+                state.placeOrderStatus='failed'
+            })
+            .addCase(getOrderHistory.pending,(state:any)=>{
+                state.orderHistoryStatus='loading'
+            })
+            .addCase(getOrderHistory.fulfilled,(state:any, action)=>{
+                state.orderHistoryStatus='succeeded'
+                state.orderHistory=action.payload
+            })
+            .addCase(getOrderHistory.rejected,(state:any)=>{
+                state.orderHistoryStatus='failed'
+            })
+            .addCase(updateOrder.pending,(state:any)=>{
+                state.orderUpdateStatus='loading'
+            })
+            .addCase(updateOrder.fulfilled,(state:any)=>{
+                state.orderUpdateStatus='succeeded'
+            })
+            .addCase(updateOrder.rejected,(state:any)=>{
+                state.orderUpdateStatus='failed'
             })
     }
 })

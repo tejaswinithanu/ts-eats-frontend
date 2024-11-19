@@ -1,0 +1,22 @@
+.sub-home-container { 
+    position: relative;
+    background-size: cover;
+    min-height: 100vh;
+    height: 100vh;
+    background-image: url('https://wallpapers.com/images/featured/food-4k-1pf6px6ryqfjtnyr.jpg');
+}
+  
+.sub-home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-color: #242030;
+    opacity: 0.9;
+}
+
+
+  
