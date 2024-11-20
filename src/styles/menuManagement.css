@@ -1,5 +1,4 @@
 .row-container:hover {
-    transform: scale(1.0); /* Slight zoom effect */
+    transform: scale(1.04); /* Slight zoom effect */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-  }
-  
+}

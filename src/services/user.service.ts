@@ -1,4 +1,4 @@
-import axios from './axios.service'
+import axios from '../configs/axios.config'
 
 class UserService{
     addCartItem=async (item:any)=>{
@@ -35,7 +35,6 @@ class UserService{
         
         try{
             const response=await axios.get(`/cart/${userId}`)
-            console.log(response)
             if(response.status===200){
                 return response.data.data
             }else{

@@ -1,4 +1,4 @@
-import axios from './axios.service'
+import axios from '../configs/axios.config'
 
 class MenuService{
     getMenuItems=async ()=>{

@@ -1,10 +1,10 @@
-import axios from './axios.service'
+import axios from '../configs/axios.config'
 
 class UserManagementService{
     getAllUsers=async()=>{
         try{
             const response=await axios.get('/users')
-
+            console.log(response)
             if(response.data.status===200){      
                 return response.data.data
             }else{

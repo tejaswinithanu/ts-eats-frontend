@@ -1,21 +1,21 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './user/pages/Home/home';
-import Menu from './user/pages/Menu/menu';
-import { ProtectedRoute } from './user/components/ProtectedRoute/protectedRoute';
-import Cart from './user/pages/Cart/cart';
-import AuthForm from './user/components/AuthForm/authForm';
-import CheckoutPage from './user/components/Checkout/checkout';
-import { Runway } from './user/components/Runway/runway';
-import { AdminLandingPage } from './admin/components/AdminLandingPage/adminLandingPage';
-import { UserOrders } from './admin/components/UserOrders/userOrders';
-import { UserManagement } from './admin/components/UserManagement/userManagement';
-import { MenuManagement } from './admin/components/MenuManagement/menuMangement';
+import Home from './user/pages/home';
+import Menu from './user/pages/menu';
+import { ProtectedRoute } from './user/components/protectedRoute';
+import Cart from './user/pages/cart';
+import AuthForm from './user/components/authForm';
+import CheckoutPage from './user/components/checkout';
+import { Runway } from './user/components/runway';
+import { AdminLandingPage } from './admin/components/adminLandingPage';
+import { UserOrders } from './admin/components/userOrders';
+import { UserManagement } from './admin/components/userManagement';
+import { MenuManagement } from './admin/components/menuMangement';
 import { OrderManagement } from './admin/components/OrderManagement/orderManagement';
-import { MyOrders } from './user/pages/MyOrders/myOrders';
-import RoleProtectedRoute from './user/components/RoleProtectedRoute/roleProtectedRoute'; 
-import { AdminDashboard } from './admin/pages/AdminDashboard/adminDashboard';
+import { MyOrders } from './user/pages/myOrders';
+import RoleProtectedRoute from './user/components/roleProtectedRoute'; 
+import { AdminDashboard } from './admin/pages/adminDashboard';
 
 function App() {
   return (
